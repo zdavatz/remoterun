@@ -1,5 +1,5 @@
 # remoterun
-1. Login with Password via Browser
+1. Login with Password via Browser. The Passwort should be saved in a separate file.
 
 2. Start a program located in /usr/local/bin using a browser, remotely, via the click of one button. One button per file. Manage them via an yaml file.
 
