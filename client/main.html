@@ -1,16 +1,59 @@
 <head>
   <title>remoterun</title>
 </head>
-
+<!--  -->
 <body>
-
-
-  {{> remoteFiles}}
-
+  <div class="section">
+    <div class="container">
+      <div class="columns">
+        <!--  -->
+        <div class="column is-3">
+          <aside class="menu">
+            <p class="menu-label">
+              Run scripts
+            </p>
+            {{> remoteFiles}}
+          </aside>
+        </div>
+        <!--  -->
+        <div class="column is-8">
+          <div class="">
+            {{> console}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
-
+<!--  -->
 <template name="remoteFiles">
-  {{#each files}}
-    <a href="">{{name}}</a> <br/>
+  <ul class="menu-list notification is-white">
+    {{#each files}}
+    <li><a href="#" class="is-capitalized runCommand"  data-val="{{id}}">{{name}}</a> </li>
+    {{/each}}
+  </ul>
+</template>
+<!--  -->
+<template name="console">
+  <article class="message is-info" style="min-height:600px;">
+    <div class="message-header is-hidden">
+      <p>Info</p>
+      <button class="delete" aria-label="delete"></button>
+    </div>
+    <!--  -->
+    <div class="message-body">
+      {{> logs}}
+    </div>
+  </article>
+</template>
+<!-- logs -->
+<template name="logs">
+  <!-- Getting logs -->
+  {{#each getSetting 'logs'}}
+  <p>
+    <span>date</span><br/>
+    <span>{{log}}</span>
+    <span>{{msg}}</span>
+  </p>
   {{/each}}
 </template>

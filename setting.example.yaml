@@ -1,9 +1,23 @@
 title: Remotly run files on linux system
 files:
   - 
-    name: system
-    file: e
+    name: run installer
+    id: file1
+    file: ls
   - 
-    name:
-    file: 
+    name: config
+    id: file2
+    file: ls -a
+  -
+    name: update system
+    file: cd ~ && ls
+    id: 
+  -
+    name: poweroff
+    id: file5
+    file: ls -lh
+  -
+    name: restart app
+    id: file4
+    file:
 credit: hamza mu
