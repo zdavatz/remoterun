@@ -1,0 +1,16 @@
+<head>
+  <title>remoterun</title>
+</head>
+
+<body>
+
+
+  {{> remoteFiles}}
+
+</body>
+
+<template name="remoteFiles">
+  {{#each files}}
+    <a href="">{{name}}</a> <br/>
+  {{/each}}
+</template>
