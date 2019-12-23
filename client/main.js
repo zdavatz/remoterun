@@ -30,7 +30,7 @@ Meteor.startup(function(){
 Template.remoteFiles.onCreated(function(){
   var logs = []
   logs.push({title:'',msg:'The script x run successfully'})
-  App.setSetting({logs:logs})
+  App.setSetting({logs:[]})
 })
 
 /**
@@ -52,6 +52,7 @@ Template.remoteFiles.events({
     Meteor.call('runCommand' , command , (err, result)=>{
       if(result){
         log('result',result)
+        App.pushSetting({logs:result})
       }
     })
   }

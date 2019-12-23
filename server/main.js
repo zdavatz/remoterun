@@ -6,20 +6,28 @@ import _ from 'lodash'
 import {
   Meteor
 } from 'meteor/meteor';
-const {
-  exec
-} = require('child_process');
-const { spawnSync } = require( 'child_process' );
+/**
+ * Run a child process
+ */
+const { spawnSync} = require('child_process');
+/**
+ * 
+ */
 log = console.log
-Meteor.startup(() => {
-  // code to run on server at startup
-});
+/**
+ * Loading the Setting file
+ */
 const file = Assets.getText('settings.yaml')
 const settings = YAML.parse(file)
+const files = settings.files;
+log('Loading Setting file: ',files)
 /**
  * 
  */
 Meteor.methods({
+  /**
+   * Loading the settings file (masked)
+   */
   getSetting() {
     log('Loading settings: --- ', settings)
     /**
@@ -30,36 +38,43 @@ Meteor.methods({
       return {name:file.name, id: file.id}
     })
     settings.files = files
-    log('files',files)
+    log('Loading Masked Files: ',files)
     return settings
   },
   /**
    * 
-   * @param {*} command 
+   * Running a file
    */
   runCommand(command) {
     /**
      * Get the command based on the ID
      */
-    var file = _.find(settings.files, (i) => {
-      return i.id = command
+    log('Requesting a file with id: ', command)
+    var file = _.find(files, (i) => {
+      return i.id === command
     })
-
-    if(!file){
+    log('Getting Setting File: ',file)
+    if(!file || !file.file){
       throw new Meteor.Error('command-err','Command does not exist')
       return
     }
-    log('file',file.file)
     var command = file.file;
-    var result = {}
-    /**
-     * Running a command with paramters
-     * const child = spawnSync('ls', ['-lh', '/usr']);
+    /** Running a command with paramters
+     * 
+     *  Test file : '/home/neox/run/log.js' 
      */
-    const commandRun = spawnSync( command );
-    result.log = commandRun.stdout.toString()
-    result.err = commandRun.stderr.toString()
-    return result
+    log('--Runnung command',command)
+    const ls = spawnSync( command , [] );
+    if(ls.stdout){
+      log('Success',ls.stdout.toString())
+      return {log:ls.stdout.toString(), err: null, status:'Success'}
+    }
+
+    if(ls.stderr){
+      log('ERROR',ls.stderr.toString())
+      return{log: null, err: 'Error: Command/ File not found', status: 'Error'}
+    }
+
   }
 })
 /**

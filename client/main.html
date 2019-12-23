@@ -50,10 +50,12 @@
 <template name="logs">
   <!-- Getting logs -->
   {{#each getSetting 'logs'}}
-  <p>
-    <span>date</span><br/>
-    <span>{{log}}</span>
-    <span>{{msg}}</span>
+  <p class="content">
+    <span class="has-text-bold is-small">{{createdAt}}</span><br/>
+    <span class="has-text-dark">{{log}}</span>
+    {{#if err}}
+    <span class="has-text-danger">{{err}}</span>
+    {{/if}}
   </p>
   {{/each}}
 </template>

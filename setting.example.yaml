@@ -3,21 +3,21 @@ files:
   - 
     name: run installer
     id: file1
-    file: ls
+    file: /home/neox/run/log.js
   - 
     name: config
     id: file2
-    file: ls -a
+    file: /home/neox/run/runserver.py
   -
     name: update system
-    file: cd ~ && ls
-    id: 
+    file: ls assets
+    id: /home/neox/run/pushNotification.jl
   -
     name: poweroff
     id: file5
-    file: ls -lh
+    file: /home/neox/run/backup.sh
   -
     name: restart app
     id: file4
-    file:
+    file: /home/neox/run/syncdata.js
 credit: hamza mu
