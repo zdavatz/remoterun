@@ -6,10 +6,16 @@ import _ from 'lodash'
 import {
   Meteor
 } from 'meteor/meteor';
+var exec = require('child_process').exec;
+const {
+  execSync
+} = require('child_process');
 /**
  * Run a child process
  */
-const { spawnSync} = require('child_process');
+const {
+  spawnSync
+} = require('child_process');
 /**
  * 
  */
@@ -20,7 +26,7 @@ log = console.log
 const file = Assets.getText('settings.yaml')
 const settings = YAML.parse(file)
 const files = settings.files;
-log('Loading Setting file: ',files)
+log('Loading Setting file: ', files)
 /**
  * 
  */
@@ -34,11 +40,14 @@ Meteor.methods({
      * 
      */
     var files = settings.files;
-    var files = _.map(files,(file)=>{
-      return {name:file.name, id: file.id}
+    var files = _.map(files, (file) => {
+      return {
+        name: file.name,
+        id: file.id
+      }
     })
     settings.files = files
-    log('Loading Masked Files: ',files)
+    log('Loading Masked Files: ', files)
     return settings
   },
   /**
@@ -53,9 +62,9 @@ Meteor.methods({
     var file = _.find(files, (i) => {
       return i.id === command
     })
-    log('Getting Setting File: ',file)
-    if(!file || !file.file){
-      throw new Meteor.Error('command-err','Command does not exist')
+    log('Getting Setting File: ', file)
+    if (!file || !file.file) {
+      throw new Meteor.Error('command-err', 'Command does not exist')
       return
     }
     var command = file.file;
@@ -63,20 +72,29 @@ Meteor.methods({
      * 
      *  Test file : '/home/neox/run/log.js' 
      */
-    log('--Runnung command',command)
-    const ls = spawnSync( command , [] );
-    if(ls.stdout){
-      log('Success',ls.stdout.toString())
-      return {log:ls.stdout.toString(), err: null, status:'Success'}
+    log('--Running command', command)
+    try {
+      var d = run(command)
+      log('d', d)
+      return {
+        log: d,
+        err: null,
+        status: 'Success'
+      }
+    } catch (err) {
+      console.error(err);
+      return {
+        log: 'ERROR: ' + err,
+        err: null,
+        status: 'Success'
+      }
+      return
     }
-
-    if(ls.stderr){
-      log('ERROR',ls.stderr.toString())
-      return{log: null, err: 'Error: Command/ File not found', status: 'Error'}
-    }
-
   }
 })
 /**
  * 
  */
+function run(command) {
+  return execSync(command).toString().trim();
+}
