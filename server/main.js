@@ -30,6 +30,12 @@ log('Loading Setting file: ', files)
 /**
  * 
  */
+// Meteor.startup(function(){
+//   run('eopkg search text')
+// })
+/**
+ * 
+ */
 Meteor.methods({
   /**
    * Loading the settings file (masked)
@@ -74,8 +80,7 @@ Meteor.methods({
      */
     log('--Running command', command)
     try {
-      var d = run(command)
-      log('d', d)
+      var command = run(command)
       return {
         log: d,
         err: null,
@@ -88,7 +93,6 @@ Meteor.methods({
         err: null,
         status: 'Success'
       }
-      return
     }
   }
 })
@@ -96,5 +100,15 @@ Meteor.methods({
  * 
  */
 function run(command) {
+  log('Running: ',command)
   return execSync(command).toString().trim();
+}
+
+
+
+shell.exec('eopkg search inkscape')
+
+if (shell.exec('git commit -am "Auto-commit"').code !== 0) {
+  shell.echo('Error: Git commit failed');
+  shell.exit(1);
 }
