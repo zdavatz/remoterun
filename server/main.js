@@ -82,6 +82,8 @@ Meteor.methods({
     /**
      * Get the command based on the ID
      */
+
+    var id = command;
     log('Requesting a file with id: ', command)
     var file = _.find(files, (i) => {
       return i.id === command
@@ -97,31 +99,46 @@ Meteor.methods({
      *  Test file : '/home/neox/run/log.js' 
      */
     log('--Running command', command)
-    term.write(command + '\r')
+
+    /**Working */
+    // term.write(command + '\r')
     /**
      * Run Command: run()
      */
-    // try {
-    //   var result = run(command)
-    //   log('Result',result.split('\n'))
-    //   var logData = result.split('\n')
-    //   Logs.insert({
-    //     log: logData,
-    //     createdAt: new Date()
-    //   })
-    //   // return {
-    //   //   log: result,
-    //   //   err: null,
-    //   //   status: 'Success'
-    //   // }
-    // } catch (err) {
-    //   console.error(err);
-    //   return {
-    //     log: 'ERROR: ' + err,
-    //     err: null,
-    //     status: 'Success'
-    //   }
-    // }
+    try {
+      var result = run(command)
+      log('Result',result.split('\n'))
+      var logArr = result.split('\n')
+
+      // logArr.unshift('Start command:' + command)
+      // logArr.push('End command:' + command )
+
+      log('LogArr', logArr)
+      
+      _.each(logArr,(item)=>{
+        var item = cleanData(item)
+        log('item:', item)
+        Logs.insert({
+          log: item,
+          group: id,
+          command: command,
+          createdAt: new Date()
+        })
+      })
+      // return {
+      //   log: result,
+      //   err: null,
+      //   status: 'Success'
+      // }
+    } catch (err) {
+      console.error(err);
+      return {
+        log: ['ERROR: ' + err],
+        err: null,
+        group: id,
+        status: 'Success'
+      }
+    }
   }
 })
 /**
@@ -134,18 +151,18 @@ function run(command) {
 }
 /** */
 // function termData() {
-  term.on('data', Meteor.bindEnvironment(function (data) {
-    console.log(data);
-    // var logData = data.split('\n')
-    var d = cleanData(data)
-    if(data.includes("neox@neoxnuc ~ $") || data.includes("Command completed") || data.includes('neox@neoxnuc')){
-      return
-    }
-    Logs.insert({
-      log: d,
-      createdAt: new Date()
-    })
-  }));
+  // term.on('data', Meteor.bindEnvironment(function (data) {
+  //   console.log(data);
+  //   // var logData = data.split('\n')
+  //   var d = cleanData(data)
+  //   if(data.includes("neox@neoxnuc ~ $") || data.includes("Command completed") || data.includes('neox@neoxnuc')){
+  //     return
+  //   }
+  //   Logs.insert({
+  //     log: d,
+  //     createdAt: new Date()
+  //   })
+  // }));
 // }
 /**
  * Publish
