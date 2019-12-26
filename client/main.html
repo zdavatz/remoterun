@@ -1,5 +1,13 @@
 <head>
   <title>remoterun</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js"></script>
+
+
+
 </head>
 <!--  -->
 <body>
@@ -35,7 +43,7 @@
 </template>
 <!--  -->
 <template name="console">
-  <article class="message is-info" style="min-height:600px;">
+  <article class="message is-light" style="min-height:600px;">
     <div class="message-header is-hidden">
       <p>Info</p>
       <button class="delete" aria-label="delete"></button>
@@ -48,14 +56,38 @@
 </template>
 <!-- logs -->
 <template name="logs">
+  <div class=" "> 
   <!-- Getting logs -->
-  {{#each getSetting 'logs'}}
-  <p class="content">
-    <span class="has-text-bold is-small">{{createdAt}}</span><br/>
-    <span class="has-text-dark">{{log}}</span>
-    {{#if err}}
+  <!-- {{#each getSetting 'logs'}} -->
+
+  <!-- <div id="terminal"></div> -->
+
+
+  <!-- <code>{{logX}}</code> -->
+  <!-- <br/>
+
+  <hr/> -->
+  {{#each logs}}
+  <div class="contentx is-smallx" style="line-height: 170%;">
+    <!-- <span class="has-text-bold is-small">{{createdAt}}</span><br/> -->
+    <!-- <span class="has-text-dark">{{{log}}}</span> -->
+
+
+    <!-- {{log}} -->
+    <small>[{{moFormat createdAt 'HH:mm:ss'}}] </small>$   {{getLog log}}
+    <!-- <br/> -->
+
+    
+    <!-- {{#each log}}
+      - {{getLog this}} <br/>
+    {{/each}} -->
+
+    <!-- {{#if err}}
     <span class="has-text-danger">{{err}}</span>
-    {{/if}}
-  </p>
+    {{/if}} -->
+  </div>
+
   {{/each}}
+
+</div>
 </template>
