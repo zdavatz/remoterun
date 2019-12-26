@@ -110,26 +110,40 @@ Meteor.methods({
       log('Result',result.split('\n'))
       var logArr = result.split('\n')
 
-      // logArr.unshift('Start command:' + command)
-      // logArr.push('End command:' + command )
+      logArr.unshift('starting' + ': ' + command)
+      logArr.push('ending' + ': ' + command )
 
       log('LogArr', logArr)
       
       _.each(logArr,(item)=>{
         var item = cleanData(item)
         log('item:', item)
-        Logs.insert({
+
+        var obj = {
           log: item,
           group: id,
           command: command,
-          createdAt: new Date()
-        })
+          createdAt: new Date(),
+          status: 'success'
+        }
+        //
+        if(item.includes('starting')){
+          obj.isBlock = true
+          obj.type = 'start'
+          obj.isStart = true
+        }else if(item.includes('ending')){
+          obj.isBlock = true
+          obj.type = 'end'
+          obj.isEnd = true
+        }else{
+          obj.isBlock = false
+          obj.isLog = true
+          obj.type = 'msg'
+        }
+        //
+        Logs.insert(obj)
       })
-      // return {
-      //   log: result,
-      //   err: null,
-      //   status: 'Success'
-      // }
+
     } catch (err) {
       console.error(err);
       return {

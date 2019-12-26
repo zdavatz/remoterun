@@ -52,9 +52,34 @@
 <template name="logs">
   <div class="" style='font-family: "Helvetica", "Arial", sans-serif !important;'> 
   {{#each logs}}
-  <div class="notfication is-light " style="line-height: 190%;font-size: 14px;">
-    <small>[{{moFormat createdAt 'HH:mm:ss'}}] </small> <span class="tag is-dark is-outlined">{{command}}</span>  $   <span class="content is-small">{{getLog log}}</span>
+
+  {{#if isStart}}
+  <div  class="has-text-centeredx">
+    <span class="tag is-warning">Started at {{moFormat createdAt 'HH:mm:ss'}}</span><br/>
+    <span class="tag is-warning">Starting command: {{group}}</span> <br/>
+    
   </div>
+  <br/>
+  <br/>
+  {{/if}}
+
+
+  {{#unless isBlock}}
+  <div class="notfication is-light " style="line-height: 190%;font-size: 14px;">
+    <small>[{{moFormat createdAt 'HH:mm:ss'}}] </small> <span class="tag is-dark is-outlined">{{group}}</span>  $   <span class="content is-small">{{getLog log}}</span>
+  </div>
+  {{/unless}}
+
+
+
+  {{#if isEnd}}
+  <div  class="has-text-centeredx">
+    <span class="tag is-success">Ended command: {{group}}</span> <br/>
+  <span class="tag is-success">Ended at {{moFormat createdAt 'HH:mm:ss'}}</span><br/>
+  </div>
+  {{/if}}
+
   {{/each}}
+
 </div>
 </template>
