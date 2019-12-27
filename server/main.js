@@ -183,7 +183,7 @@ function run(command) {
  * Publish
  */
 Meteor.publish(null, () => {
-  return Logs.find({},{limit:100})
+  return Logs.find({})
 })
 /**
  * 

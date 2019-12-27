@@ -55,9 +55,8 @@
 
   {{#if isStart}}
   <div  class="has-text-centeredx">
-    <span class="tag is-warning">Started at {{moFormat createdAt 'HH:mm:ss'}}</span><br/>
-    <span class="tag is-warning">Starting command: {{group}}</span> <br/>
-    
+    <span class="tag is-primary">Starting command: {{group}}</span> <br/>
+    <span class="tag is-primary">Started at {{moFormat createdAt 'HH:mm:ss'}}</span><br/>
   </div>
   <br/>
   <br/>
@@ -74,8 +73,8 @@
 
   {{#if isEnd}}
   <div  class="has-text-centeredx">
-    <span class="tag is-success">Ended command: {{group}}</span> <br/>
-  <span class="tag is-success">Ended at {{moFormat createdAt 'HH:mm:ss'}}</span><br/>
+    <span class="tag is-danger">Ended command: {{group}}</span> <br/>
+  <span class="tag is-danger">Ended at {{moFormat createdAt 'HH:mm:ss'}}</span><br/>
   </div>
   {{/if}}
 
