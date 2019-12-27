@@ -106,44 +106,77 @@ Meteor.methods({
     /**
      * Run Command: run()
      */
+
+
+    var obj = {
+      log: "Starting a job",
+      group: id,
+      name: file.name,
+      command: command,
+      createdAt: new Date(),
+      status: 'success',
+      isBlock: true,
+      type: 'start',
+      isStart: true
+    }
+
+    setLog(obj)
+
+
+
+
     try {
       var result = run(command)
-      log('Result',result.split('\n'))
+      log('Result', result.split('\n'))
       var logArr = result.split('\n')
 
-      logArr.unshift('starting' + ': ' + command)
-      logArr.push('ending' + ': ' + command )
+      // logArr.unshift('starting' + ': ' + command)
+      // logArr.push('ending' + ': ' + command )
 
       log('LogArr', logArr)
-      
-      _.each(logArr,(item)=>{
+
+      _.each(logArr, (item) => {
         var item = cleanData(item)
         log('item:', item)
 
         var obj = {
           log: item,
           group: id,
+          name: file.name,
           command: command,
           createdAt: new Date(),
           status: 'success'
         }
         //
-        if(item.includes('starting')){
-          obj.isBlock = true
-          obj.type = 'start'
-          obj.isStart = true
-        }else if(item.includes('ending')){
+        if (item.includes('ending')) {
           obj.isBlock = true
           obj.type = 'end'
           obj.isEnd = true
-        }else{
+        } else {
           obj.isBlock = false
           obj.isLog = true
           obj.type = 'msg'
         }
         //
         Logs.insert(obj)
-      })
+      });
+
+      /** Setting end of a job */
+
+      var obj = {
+        log: "Starting a job",
+        group: id,
+        name: file.name,
+        command: command,
+        createdAt: new Date(),
+        status: 'success',
+        isBlock: true,
+        type: 'end',
+        isEnd: true
+      }
+
+      setLog(obj)
+
 
     } catch (err) {
       console.error(err);
@@ -154,6 +187,9 @@ Meteor.methods({
         status: 'Success'
       }
     }
+
+
+
   }
 })
 /**
@@ -166,18 +202,18 @@ function run(command) {
 }
 /** */
 // function termData() {
-  // term.on('data', Meteor.bindEnvironment(function (data) {
-  //   console.log(data);
-  //   // var logData = data.split('\n')
-  //   var d = cleanData(data)
-  //   if(data.includes("neox@neoxnuc ~ $") || data.includes("Command completed") || data.includes('neox@neoxnuc')){
-  //     return
-  //   }
-  //   Logs.insert({
-  //     log: d,
-  //     createdAt: new Date()
-  //   })
-  // }));
+// term.on('data', Meteor.bindEnvironment(function (data) {
+//   console.log(data);
+//   // var logData = data.split('\n')
+//   var d = cleanData(data)
+//   if(data.includes("neox@neoxnuc ~ $") || data.includes("Command completed") || data.includes('neox@neoxnuc')){
+//     return
+//   }
+//   Logs.insert({
+//     log: d,
+//     createdAt: new Date()
+//   })
+// }));
 // }
 /**
  * Publish
@@ -201,10 +237,16 @@ Meteor.publish(null, () => {
 
     // term.write('ls /\r')
  */
-function cleanData(data){
+function cleanData(data) {
   // return data.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, " ")
   var data = data.replace(/otify;/g, "")
   var data = data.replace(/777;preexec/g, "")
   // return data = data.replace(/\033\[[0-9;]*m/,"")
   return stripAnsi(data)
+}
+
+function setLog(obj) {
+
+  Logs.insert(obj)
+
 }

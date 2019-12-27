@@ -55,7 +55,7 @@
 
   {{#if isStart}}
   <div  class="has-text-centeredx">
-    <span class="tag is-primary">Starting command: {{group}}</span> <br/>
+    <span class="tag is-primary">Starting command: {{name}}</span> <br/>
     <span class="tag is-primary">Started at {{moFormat createdAt 'HH:mm:ss'}}</span><br/>
   </div>
   <br/>
@@ -65,7 +65,7 @@
 
   {{#unless isBlock}}
   <div class="notfication is-light " style="line-height: 190%;font-size: 14px;">
-    <small>[{{moFormat createdAt 'HH:mm:ss'}}] </small> <span class="tag is-dark is-outlined">{{group}}</span>  $   <span class="content is-small">{{getLog log}}</span>
+    <small>[{{moFormat createdAt 'HH:mm:ss'}}] </small> <span class="tag is-dark is-outlined">{{name}}</span>  $   <span class="content is-small">{{getLog log}}</span>
   </div>
   {{/unless}}
 
@@ -73,7 +73,7 @@
 
   {{#if isEnd}}
   <div  class="has-text-centeredx">
-    <span class="tag is-danger">Ended command: {{group}}</span> <br/>
+    <span class="tag is-danger">Ended command: {{name}}</span> <br/>
   <span class="tag is-danger">Ended at {{moFormat createdAt 'HH:mm:ss'}}</span><br/>
   </div>
   {{/if}}
