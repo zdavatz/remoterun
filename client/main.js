@@ -45,6 +45,7 @@ Template.remoteFiles.helpers({
 
 })
 Template.remoteFiles.events({
+
   'click .runCommand':(e)=>{
     e.preventDefault();
     var command = $(e.currentTarget).attr('data-val')
@@ -62,6 +63,31 @@ Template.remoteFiles.events({
  * 
  */
 
+ Template.login.events({
+  'keyup .check':(e)=>{
+
+    if(e.which === 13){
+      var key = $(e.currentTarget).val()
+     
+      Meteor.call('checkPasskey',key,(err,data)=>{
+        log(data)
+        if(!err){
+          App.setSetting(data)
+        }else{
+          log(err)
+          alert(err.reason)
+          App.setSetting({error:err})
+        }
+      })
+    }
+
+  },
+ })
+
+/**
+ * 
+ */
+
  Template.logs.onRendered(function(){
   // var term = new Terminal();
   // term.open(document.getElementById('terminal'));
@@ -74,7 +100,7 @@ Template.remoteFiles.events({
 Template.logs.helpers({
 
   logs(){
-    return Logs.find({},{sort: {createdAt: -1},limit:20})
+    return Logs.find({},{sort: {createdAt: -1},limit:100})
   },
   logX(){
      var logX = Logs.findOne()

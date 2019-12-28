@@ -5,11 +5,14 @@
 </head>
 <!--  -->
 <body>
-  <div class="section">
-    <div class="container">
-      <div class="columns">
+
+  
+  <!-- <div class="section"> -->
+  
+      <div class="columns is-marginless is-paddingless">
         <!--  -->
-        <div class="column is-3">
+        <div class="column is-2">
+          {{>login}}
           <aside class="menu">
             <p class="menu-label">
               Run scripts
@@ -18,14 +21,17 @@
           </aside>
         </div>
         <!--  -->
-        <div class="column is-8">
+        <div class="column is-10 is-paddingless is-marginless is-fh">
           <div class="">
             {{> console}}
           </div>
         </div>
       </div>
-    </div>
-  </div>
+ 
+  <!-- </div> -->
+
+
+
 </body>
 <!--  -->
 <template name="remoteFiles">
@@ -35,7 +41,7 @@
     {{/each}}
   </ul>
 </template>
-<!--  -->
+<!-- console -->
 <template name="console">
   <article class="message is-light" style="min-height:600px;">
     <div class="message-header is-hidden">
@@ -48,6 +54,7 @@
     </div>
   </article>
 </template>
+<!--  -->
 <!-- logs -->
 <template name="logs">
   <div class="" style='font-family: "Helvetica", "Arial", sans-serif !important;'> 
@@ -64,8 +71,8 @@
 
 
   {{#unless isBlock}}
-  <div class="notfication is-light " style="line-height: 190%;font-size: 14px;">
-    <small>[{{moFormat createdAt 'HH:mm:ss'}}] </small> <span class="tag is-dark is-outlined">{{name}}</span>  $   <span class="content is-small">{{getLog log}}</span>
+  <div class="" style="line-height: 190%;font-size: 14px;">
+    <span class="is-italic"><small>[{{moFormat createdAt 'HH:mm:ss'}}] </small> </span> <span class="has-text-weight-bold">{{name}} $ </span>    <span class="content is-small">{{getLog log}}</span>
   </div>
   {{/unless}}
 
@@ -81,4 +88,11 @@
   {{/each}}
 
 </div>
+</template>
+
+
+<template name="login">
+  <div>
+    <input class="input text check" name="password" placeholder="Write the passkey">
+  </div>
 </template>

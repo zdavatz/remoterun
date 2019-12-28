@@ -55,24 +55,34 @@ const term = pty.spawn('bash', [], {
  * 
  */
 Meteor.methods({
+
+  checkPasskey(pass){
+    log(settings.passkey , pass)
+    if(settings.passkey === pass){
+      log('Passkey confirmed', getFiles())
+      log('Loading settings: --- ', settings)
+      /**
+       * 
+       */
+      var files = settings.files;
+      var files = _.map(files, (file) => {
+        return {
+          name: file.name,
+          id: file.id
+        }
+      })
+      settings.files = files
+      log('Loading Masked Files: ', files)
+      return settings
+    }else{
+      throw new Meteor.Error('passkey-error', 'Wrong passkey, please enter the correct one')
+    }
+  },
   /**
    * Loading the settings file (masked)
    */
   getSetting() {
-    log('Loading settings: --- ', settings)
-    /**
-     * 
-     */
-    var files = settings.files;
-    var files = _.map(files, (file) => {
-      return {
-        name: file.name,
-        id: file.id
-      }
-    })
-    settings.files = files
-    log('Loading Masked Files: ', files)
-    return settings
+
   },
   // 
   /**
@@ -125,7 +135,7 @@ Meteor.methods({
 
 
 
-    try {
+    // try {
       var result = run(command)
       log('Result', result.split('\n'))
       var logArr = result.split('\n')
@@ -178,15 +188,15 @@ Meteor.methods({
       setLog(obj)
 
 
-    } catch (err) {
-      console.error(err);
-      return {
-        log: ['ERROR: ' + err],
-        err: null,
-        group: id,
-        status: 'Success'
-      }
-    }
+    // } catch (err) {
+    //   console.error(err);
+    //   return {
+    //     log: ['ERROR: ' + err],
+    //     err: null,
+    //     group: id,
+    //     status: 'Success'
+    //   }
+    // }
 
 
 
@@ -248,5 +258,13 @@ function cleanData(data) {
 function setLog(obj) {
 
   Logs.insert(obj)
+
+}
+
+/**
+ * getFiles
+ */
+
+function getFiles(){
 
 }

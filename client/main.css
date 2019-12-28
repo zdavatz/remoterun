@@ -1,4 +1,31 @@
 body {
   padding: 10px;
   font-family: sans-serif;
+  padding: 0px;
+  margin:9px;
+}
+
+
+.is-fh{
+  height: 100vh;
+  /* height: 100%; */
+  overflow-y: scroll;
+}
+
+.body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE and Edge */
+html {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar {
+  width: 0px;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: #FF0000;
 }
