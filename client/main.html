@@ -9,10 +9,21 @@
   
   <!-- <div class="section"> -->
   
-      <div class="columns is-marginless is-paddingless">
-        <!--  -->
-        <div class="column is-2">
+      <div class="columns is-marginless is-paddingless is-centered">
+
+        {{#unless getSetting 'files'}}
+       
           {{>login}}
+
+  
+
+        
+        {{/unless}}
+        <!--  -->
+
+        {{#if getSetting 'files'}}
+        <div class="column is-2">
+         
           <aside class="menu">
             <p class="menu-label">
               Run scripts
@@ -26,7 +37,12 @@
             {{> console}}
           </div>
         </div>
+
+        {{/if}}
+
+
       </div>
+      
  
   <!-- </div> -->
 
@@ -92,7 +108,26 @@
 
 
 <template name="login">
+
+  <div class="column is-4">
+  <br/>
+  <br/>
+  <br/>
+  
+  <article class="message is-primary">
+    <div class="message-header">
+      <p>Enter a passkey</p>
+      <button class="delete" aria-label="delete"></button>
+    </div>
+    <!--  -->
+    <div class="message-body">
+      <input class="input text check" name="password" placeholder="Write the passkey">
+    </div>
+  </article>
+
+
   <div>
-    <input class="input text check" name="password" placeholder="Write the passkey">
+   
+  </div>
   </div>
 </template>

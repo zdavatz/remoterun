@@ -17,15 +17,8 @@ log = console.log
  * 
  */
 Meteor.startup(function(){
-  Meteor.call('getSetting',null,(err,data)=>{
-    log(err,data)
-    if(data){
-      App.setSetting(data)
-    } 
-  })
-  /**
-   * 
-   */
+
+
 })
 /**
  * 
