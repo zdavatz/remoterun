@@ -136,6 +136,8 @@ Meteor.methods({
 
 
     // try {
+
+    
       var result = run(command)
       log('Result', result.split('\n'))
       var logArr = result.split('\n')
@@ -173,19 +175,23 @@ Meteor.methods({
 
       /** Setting end of a job */
 
-      var obj = {
-        log: "Starting a job",
-        group: id,
-        name: file.name,
-        command: command,
-        createdAt: new Date(),
-        status: 'success',
-        isBlock: true,
-        type: 'end',
-        isEnd: true
-      }
+      Meteor.setTimeout(()=>{
+        var obj = {
+          log: "Starting a job",
+          group: id,
+          name: file.name,
+          command: command,
+          createdAt: new Date(),
+          status: 'success',
+          isBlock: true,
+          type: 'end',
+          isEnd: true
+        }
+  
+        setLog(obj)
+      },1000)
 
-      setLog(obj)
+
 
 
     // } catch (err) {
@@ -207,7 +213,7 @@ Meteor.methods({
  * === Child execSync
  */
 function run(command) {
-  log('Running: ', command)
+  log('Running: ', command);
   return execSync(command).toString().trim();
 }
 /** */

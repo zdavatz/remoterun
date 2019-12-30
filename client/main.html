@@ -81,6 +81,10 @@
     <span class="tag is-primary">Starting command: {{name}}</span> <br/>
     <span class="tag is-primary">Started at {{moFormat createdAt 'HH:mm:ss'}}</span><br/>
   </div>
+
+
+
+
   <br/>
   <br/>
   {{/if}}
@@ -99,10 +103,15 @@
     <span class="tag is-danger">Ended command: {{name}}</span> <br/>
   <span class="tag is-danger">Ended at {{moFormat createdAt 'HH:mm:ss'}}</span><br/>
   </div>
+
+
   {{/if}}
+
 
   {{/each}}
 
+
+  
 </div>
 </template>
 
@@ -113,7 +122,6 @@
   <br/>
   <br/>
   <br/>
-  
   <article class="message is-primary">
     <div class="message-header">
       <p>Enter a passkey</p>
