@@ -1,10 +1,12 @@
 import { Template } from 'meteor/templating';
+
+
 import { ReactiveVar } from 'meteor/reactive-var';
 import './main.html';
 
 const stripAnsi = require('strip-ansi');
 
-
+//
 /**
  * 
  */
@@ -113,4 +115,13 @@ Template.logs.helpers({
     var data = data.replace(/777;preexec/g, "")
     return stripAnsi(data)
   }
+})
+
+
+
+Template.registerHelper('lineSplit',(str)=>{
+  if(!str){
+    return
+  }
+  return str.split(/\r?\n/)
 })

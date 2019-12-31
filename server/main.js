@@ -6,6 +6,7 @@ import _ from 'lodash'
 import {
   Meteor
 } from 'meteor/meteor';
+import { Promise } from 'meteor/promise';
 /** */
 const pty = require('pty.js');
 const stripAnsi = require('strip-ansi');
@@ -48,35 +49,32 @@ const term = pty.spawn('bash', [], {
   name: 'xterm-color',
   cols: 80,
   rows: 30,
-  cwd: process.env.HOME,
+  // cwd: process.env.HOME,
   env: process.env
 });
 /**
  * SSL
  */
-
-Meteor.startup(function() {
-  SSLProxy({
-     port: 6000, //or 443 (normal port/requires sudo)
-     ssl : {
-          key: Assets.getText("key.pem"),
-          cert: Assets.getText("cert.pem"),
-
-          //Optional CA
-          //Assets.getText("ca.pem")
-     }
-  });
+Meteor.startup(function () {
+  if (settings.ssl) {
+    SSLProxy({
+      port: 6000, //or 443 (normal port/requires sudo)
+      ssl: {
+        key: Assets.getText("key.pem"),
+        cert: Assets.getText("cert.pem"),
+        //Optional CA
+        //Assets.getText("ca.pem")
+      }
+    });
+  }
 });
-
-
 /**
  * 
  */
 Meteor.methods({
-
-  checkPasskey(pass){
-    log(settings.passkey , pass)
-    if(settings.passkey === pass){
+  checkPasskey(pass) {
+    log(settings.passkey, pass)
+    if (settings.passkey === pass) {
       log('Passkey confirmed', getFiles())
       log('Loading settings: --- ', settings)
       /**
@@ -92,16 +90,14 @@ Meteor.methods({
       settings.files = files
       log('Loading Masked Files: ', files)
       return settings
-    }else{
+    } else {
       throw new Meteor.Error('passkey-error', 'Wrong passkey, please enter the correct one')
     }
   },
   /**
    * Loading the settings file (masked)
    */
-  getSetting() {
-
-  },
+  getSetting() {},
   // 
   /**
    * 
@@ -111,7 +107,6 @@ Meteor.methods({
     /**
      * Get the command based on the ID
      */
-
     var id = command;
     log('Requesting a file with id: ', command)
     var file = _.find(files, (i) => {
@@ -128,12 +123,23 @@ Meteor.methods({
      *  Test file : '/home/neox/run/log.js' 
      */
     log('--Running command', command)
-
     /**Working */
     // term.write(command + '\r')
     /**
      * Run Command: run()
      */
+
+
+    // exec('~/run/log.js',
+    // function (error, stdout, stderr) {
+    //   console.log('stdout: ' + stdout);
+    //   log('stdout',stdout.split(" ").length)
+    //   console.log('stderr: ' + stderr);
+    //   if (error !== null) {
+    //     console.log('exec error: ' + error);
+    //   }
+    // });
+
 
 
     var obj = {
@@ -147,94 +153,74 @@ Meteor.methods({
       type: 'start',
       isStart: true
     }
-
+    
     setLog(obj)
 
 
+    // var d =  run(command)
+
+   
+
+    try{
+
+      var logs = Promise.await(run(command));
+
+      var obj = {
+      log: logs,
+      group: id,
+      name: file.name,
+      command: command,
+      createdAt: new Date(),
+      status: 'success'
+    }
+
+    setLog(obj)
+
+    // set end
+
+    log(logs)
+    log('Job is done')
 
 
-    // try {
+    var obj = {
+      log: "End a job",
+      group: id,
+      name: file.name,
+      command: command,
+      createdAt: new Date(),
+      status: 'success',
+      isBlock: true,
+      type: 'end',
+      isEnd: true
+    }
+    setLog(obj)
+
+
+    }catch(err){
+      log(err)
+    }
 
     
-      var result = run(command)
-      log('Result', result.split('\n'))
-      var logArr = result.split('\n')
-
-      // logArr.unshift('starting' + ': ' + command)
-      // logArr.push('ending' + ': ' + command )
-
-      log('LogArr', logArr)
-
-      _.each(logArr, (item) => {
-        var item = cleanData(item)
-        log('item:', item)
-
-        var obj = {
-          log: item,
-          group: id,
-          name: file.name,
-          command: command,
-          createdAt: new Date(),
-          status: 'success'
-        }
-        //
-        if (item.includes('ending')) {
-          obj.isBlock = true
-          obj.type = 'end'
-          obj.isEnd = true
-        } else {
-          obj.isBlock = false
-          obj.isLog = true
-          obj.type = 'msg'
-        }
-        //
-        Logs.insert(obj)
-      });
-
-      /** Setting end of a job */
-
-      Meteor.setTimeout(()=>{
-        var obj = {
-          log: "Starting a job",
-          group: id,
-          name: file.name,
-          command: command,
-          createdAt: new Date(),
-          status: 'success',
-          isBlock: true,
-          type: 'end',
-          isEnd: true
-        }
-  
-        setLog(obj)
-      },1000)
 
 
 
 
-    // } catch (err) {
-    //   console.error(err);
-    //   return {
-    //     log: ['ERROR: ' + err],
-    //     err: null,
-    //     group: id,
-    //     status: 'Success'
-    //   }
-    // }
 
 
 
+    return
+   
   }
 })
 /**
  *  Run Command
  * === Child execSync
  */
-function run(command) {
+async function run(command) {
   log('Running: ', command);
-  return execSync(command).toString().trim();
+  return  execSync(command).toString().trim();
 }
-/** */
+/**  Using Term.js / pty.js */
 // function termData() {
 // term.on('data', Meteor.bindEnvironment(function (data) {
 //   console.log(data);
@@ -260,15 +246,11 @@ Meteor.publish(null, () => {
  * Clean and Filter Data 
  * === (For pty.js)
  * /*
-
     // term.write('ls\r');
     // term.resize(100, 40);
     // term.write('ls /\r');
-
-
     // WORKING
     // term.write('eopkg search inkscape\r');
-
     // term.write('ls /\r')
  */
 function cleanData(data) {
@@ -278,17 +260,19 @@ function cleanData(data) {
   // return data = data.replace(/\033\[[0-9;]*m/,"")
   return stripAnsi(data)
 }
-
+/**
+ * setLog: Insert Object
+ * @param {} obj 
+ */
 function setLog(obj) {
-
   Logs.insert(obj)
-
 }
-
 /**
  * getFiles
  */
+function getFiles() {}
 
-function getFiles(){
 
-}
+
+
+

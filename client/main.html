@@ -92,7 +92,13 @@
 
   {{#unless isBlock}}
   <div class="" style="line-height: 190%;font-size: 14px;">
-    <span class="is-italic"><small>[{{moFormat createdAt 'HH:mm:ss'}}] </small> </span> <span class="has-text-weight-bold">{{name}} $ </span>    <span class="content is-small">{{getLog log}}</span>
+    <span class="is-italic"><small>[{{moFormat createdAt 'HH:mm:ss'}}] </small> </span> <span class="has-text-weight-bold">{{name}} $ </span>  
+      <!-- <span class="content is-small">{{getLog log}}</span> -->
+
+   
+    {{#each lineSplit log}}
+      <p>{{this}} <br/></p>
+    {{/each}}
   </div>
   {{/unless}}
 
