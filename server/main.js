@@ -11,7 +11,13 @@ import { Promise } from 'meteor/promise';
 const pty = require('pty.js');
 const stripAnsi = require('strip-ansi');
 /** */
-var exec = require('child_process').exec;
+// var exec = require('child_process').exec;
+
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
+
+
+/** */
 const {
   execSync
 } = require('child_process');
@@ -24,6 +30,7 @@ const {
 /**
  * 
  */
+Events = new Mongo.Collection('events')
 Logs = new Mongo.Collection('logs')
 /**
  * 
@@ -97,7 +104,23 @@ Meteor.methods({
   /**
    * Loading the settings file (masked)
    */
-  getSetting() {},
+  getSetting() {
+    log('Passkey confirmed', getFiles())
+    log('Loading settings: --- ', settings)
+    /**
+     * 
+     */
+    var files = settings.files;
+    var files = _.map(files, (file) => {
+      return {
+        name: file.name,
+        id: file.id
+      }
+    })
+    settings.files = files
+    log('Loading Masked Files: ', files)
+    return settings
+  },
   // 
   /**
    * 
@@ -143,76 +166,33 @@ Meteor.methods({
 
 
     var obj = {
-      log: "Starting a job",
-      group: id,
+      log: "In progress",
+      group: file.id,
       name: file.name,
       command: command,
       createdAt: new Date(),
-      status: 'success',
       isBlock: true,
       type: 'start',
       isStart: true
     }
     
-    setLog(obj)
+    var eventId = Events.insert(obj)
 
+    runAsync(command, eventId)
 
-    // var d =  run(command)
-
-   
-
-    try{
-
-      var logs = Promise.await(run(command));
-      // var logs = run(command)
-
-      var obj = {
-      log: logs,
-      group: id,
-      name: file.name,
-      command: command,
-      createdAt: new Date(),
-      status: 'success'
-    }
-
-    setLog(obj)
-
-    // set end
-
-    log(logs)
-    log('Job is done')
-
-
-    var obj = {
-      log: "End a job",
-      group: id,
-      name: file.name,
-      command: command,
-      createdAt: new Date(),
-      status: 'success',
-      isBlock: true,
-      type: 'end',
-      isEnd: true
-    }
-    setLog(obj)
-
-
-    }catch(err){
-      log(err)
-    }
-
-    
-
-
-
-
-
-
-
-    return
+  
    
   }
 })
+
+/** 
+ * Async run command function
+*/
+
+
+
+
+
 /**
  *  Run Command
  * === Child execSync
@@ -242,6 +222,13 @@ function run(command) {
 Meteor.publish(null, () => {
   return Logs.find({},{limit:40,sort:{createdAt:-1}})
 })
+
+/** */
+
+Meteor.publish(null,()=>{
+  return Events.find({},{limit:40,sort:{createdAt:-1}})
+})
+
 /**
  * 
  * Clean and Filter Data 
@@ -276,4 +263,26 @@ function getFiles() {}
 
 
 
+/**  */
 
+async function runAsync(command, eventId) {
+  log('running command - runAsync', command, eventId)
+  const { stdout, stderr } = await exec(command);
+
+  o = {}
+  o.log = stdout;
+  if (stderr) {
+    console.error(`error: ${stderr}`);
+    o.log = stderr 
+  }
+  o.finishedAt = new Date()
+  o.isDone = true
+  console.log(`Number of files ${stdout}`);
+
+  Events.update({_id: eventId},{$set:o})
+  
+}
+
+
+
+// Events.remove({})s

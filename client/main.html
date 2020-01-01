@@ -5,67 +5,52 @@
 </head>
 <!--  -->
 <body>
-
-  
   <!-- <div class="section"> -->
-  
-      <div class="columns is-marginless is-paddingless is-centered">
-
-        {{#unless getSetting 'files'}}
+  <div class="columns is-marginless is-paddingless is-centered">
+    {{#unless isLoggedSession}}
+    {{isLoggedSession}}
+    {{>login}}
+    {{/unless}}
+    <!--  -->
+    {{#if getSetting 'files'}}
+    <div class="column is-2">
+      <aside class="menu">
+        <p class="menu-label">
+          {{isLoggedSession}}
+         Remote run
+        </p>
+        <hr/>
+        {{> remoteFiles}}
+        <hr/>
        
-          {{>login}}
-
-  
-
-        
-        {{/unless}}
-        <!--  -->
-
-        {{#if getSetting 'files'}}
-        <div class="column is-2">
-         
-          <aside class="menu">
-            <p class="menu-label">
-              Run scripts
-            </p>
-            {{> remoteFiles}}
-          </aside>
-        </div>
-        <!--  -->
-        <div class="column is-10 is-paddingless is-marginless is-fh">
-          <div class="">
-            {{> console}}
-          </div>
-        </div>
-
-        {{/if}}
-
-
+      </aside>
+    </div>
+    <!--  -->
+    <div class="column is-10 is-paddingless is-marginless is-fh notification">
+      <div class="">
+        {{> console}}
       </div>
-      
- 
+    </div>
+    {{else}}
+    {{/if}}
+  </div>
   <!-- </div> -->
-
-
-
 </body>
 <!--  -->
 <template name="remoteFiles">
   <ul class="menu-list notification is-white">
     {{#each files}}
-    <li><a href="#" class="is-capitalized runCommand"  data-val="{{id}}">{{name}}</a> </li>
+    <li><a href="#" class="is-capitalized runCommand" data-val="{{id}}">{{name}}</a> </li>
     {{/each}}
+    <hr>
+    <a href="#" class="exit">Exit</a>
   </ul>
 </template>
 <!-- console -->
 <template name="console">
-  <article class="message is-light" style="min-height:600px;">
-    <div class="message-header is-hidden">
-      <p>Info</p>
-      <button class="delete" aria-label="delete"></button>
-    </div>
+  <article class="notification is-light is-radiusless" style="min-height:600px;">
     <!--  -->
-    <div class="message-body">
+    <div class="">
       {{> logs}}
     </div>
   </article>
@@ -73,79 +58,99 @@
 <!--  -->
 <!-- logs -->
 <template name="logs">
-  <div class="" style='font-family: "Helvetica", "Arial", sans-serif !important;'> 
-  {{#each logs}}
-
-  {{#if isStart}}
-  <div  class="has-text-centeredx">
-    <span class="tag is-primary">Starting command: {{name}}</span> <br/>
-    <span class="tag is-primary">Started at {{moFormat createdAt 'HH:mm:ss'}}</span><br/>
+  {{#each eventsList}}
+  <div class="notification is-white">
+    <div class="notification is-white">
+      <nav class="level">
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Job</p>
+            <p class="title is-3 is-capitalized">{{name}}</p>
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Started at</p>
+            <p class="title">{{moFormat createdAt 'HH:mm:ss'}}</p>
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Finished at</p>
+            <p class="title">{{moFormat finishedAt 'HH:mm:ss'}}</p>
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Status</p>
+            <p class="title">Success</p>
+          </div>
+        </div>
+      </nav>
+      <!--  -->
+      <hr />
+      <!--  -->
+      <!-- Log -->
+      <div class="log-block">
+        {{#each mkLine log}}
+        {{this}} <br />
+        {{/each}}
+      </div>
+      <!--  -->
+    </div>
+    <!-- id: {{_id}} <br/>
+      startedAt: {{createdAt}} <br/>
+      finishedAt: {{finishedAt}} <br/> -->
   </div>
-
-
-
-
-  <br/>
-  <br/>
-  {{/if}}
-
-
-  {{#unless isBlock}}
-  <div class="" style="line-height: 190%;font-size: 14px;">
-    <span class="is-italic"><small>[{{moFormat createdAt 'HH:mm:ss'}}] </small> </span> <span class="has-text-weight-bold">{{name}} $ </span>  
-      <!-- <span class="content is-small">{{getLog log}}</span> -->
-
-
-      <!-- {{toString log}} -->
-   
-    {{#each lineSplit log}}
-      <p>{{getLog this}} <br/></p>
-    {{/each}}
-  </div> 
-
-
-  {{/unless}}
-
-
-
-  {{#if isEnd}}
-  <div  class="has-text-centeredx">
-    <span class="tag is-danger">Ended command: {{name}}</span> <br/>
-  <span class="tag is-danger">Ended at {{moFormat createdAt 'HH:mm:ss'}}</span><br/>
-  </div>
-
-
-  {{/if}}
-
-
   {{/each}}
-
-
-  
-</div>
 </template>
-
-
-<template name="login">
-
-  <div class="column is-4">
-  <br/>
-  <br/>
-  <br/>
-  <article class="message is-primary">
-    <div class="message-header">
-      <p>Enter a passkey</p>
-      <button class="delete" aria-label="delete"></button>
+<template name="logsX">
+  <div class="" style='font-family: "Helvetica", "Arial", sans-serif !important;'>
+    {{#each logs}}
+    {{#if isStart}}
+    <div class="has-text-centeredx">
+      <span class="tag is-primary">Starting command: {{name}}</span> <br />
+      <span class="tag is-primary">Started at {{moFormat createdAt 'HH:mm:ss'}}</span><br />
     </div>
-    <!--  -->
-    <div class="message-body">
-      <input class="input text check" name="password" placeholder="Write the passkey">
+    <br />
+    <br />
+    {{/if}}
+    {{#unless isBlock}}
+    <div class="" style="line-height: 190%;font-size: 14px;">
+      <span class="is-italic"><small>[{{moFormat createdAt 'HH:mm:ss'}}] </small> </span> <span
+        class="has-text-weight-bold">{{name}} $ </span>
+      <!-- <span class="content is-small">{{getLog log}}</span> -->
+      <!-- {{toString log}} -->
+      {{#each lineSplit log}}
+      <p>{{getLog this}} <br /></p>
+      {{/each}}
     </div>
-  </article>
-
-
-  <div>
-   
+    {{/unless}}
+    {{#if isEnd}}
+    <div class="has-text-centeredx">
+      <span class="tag is-danger">Ended command: {{name}}</span> <br />
+      <span class="tag is-danger">Ended at {{moFormat createdAt 'HH:mm:ss'}}</span><br />
+    </div>
+    {{/if}}
+    {{/each}}
   </div>
+</template>
+<template name="login">
+  <div class="column is-4">
+    <br />
+    <br />
+    <br />
+    <article class="message is-primary">
+      <div class="message-header">
+        <p>Enter a passkey</p>
+        <button class="delete" aria-label="delete"></button>
+      </div>
+      <!--  -->
+      <div class="message-body">
+        <input class="input text check" name="password" placeholder="Write the passkey">
+      </div>
+    </article>
+    <div>
+    </div>
   </div>
 </template>

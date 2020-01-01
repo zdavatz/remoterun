@@ -23,3 +23,6 @@ insecure@1.0.7                # Allow all DB writes from clients (for prototypin
 hamzamu:settings
 izzilab:shelljs
 lbee:moment-helpers
+session
+frozeman:storage
+jeffm:local-persist
