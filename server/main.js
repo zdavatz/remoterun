@@ -164,6 +164,7 @@ Meteor.methods({
     try{
 
       var logs = Promise.await(run(command));
+      // var logs = run(command)
 
       var obj = {
       log: logs,
@@ -216,7 +217,7 @@ Meteor.methods({
  *  Run Command
  * === Child execSync
  */
-async function run(command) {
+function run(command) {
   log('Running: ', command);
   return  execSync(command).toString().trim();
 }
@@ -239,7 +240,7 @@ async function run(command) {
  * Publish
  */
 Meteor.publish(null, () => {
-  return Logs.find({})
+  return Logs.find({},{limit:40,sort:{createdAt:-1}})
 })
 /**
  * 

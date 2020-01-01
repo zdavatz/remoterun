@@ -3,14 +3,15 @@ import { Template } from 'meteor/templating';
 
 import { ReactiveVar } from 'meteor/reactive-var';
 import './main.html';
-
+import _ from 'lodash'
 const stripAnsi = require('strip-ansi');
 
 //
 /**
  * 
  */
-Logs = new Mongo.Collection('logs')
+Events = new Mongo.Collection('events');
+Logs = new Mongo.Collection('logs');
 /**
  * 
  */
@@ -65,7 +66,7 @@ Template.remoteFiles.events({
       var key = $(e.currentTarget).val()
      
       Meteor.call('checkPasskey',key,(err,data)=>{
-        log(data)
+        // log(data)
         if(!err){
           App.setSetting(data)
         }else{
@@ -93,9 +94,13 @@ Template.remoteFiles.events({
   * 
   */
 Template.logs.helpers({
-
+  // group
   logs(){
-    return Logs.find({},{sort: {createdAt: -1},limit:100})
+    var logs =  Logs.find({},{sort: {createdAt: -1},limit:50}).fetch()
+
+    // var logs = _.groupBy(logs, function(b) { return b.group})
+    // log(logs)
+    return logs
   },
   logX(){
      var logX = Logs.findOne()
@@ -120,8 +125,19 @@ Template.logs.helpers({
 
 
 Template.registerHelper('lineSplit',(str)=>{
-  if(!str){
+  if(!str || !_.isString(str)){
     return
   }
   return str.split(/\r?\n/)
+})
+
+
+/** */
+
+Template.registerHelper('toString',(json)=>{
+  log(json)
+  if(!json|| !_.isSObject(json)){
+    return
+  }
+  return JSON.stringify(json)
 })

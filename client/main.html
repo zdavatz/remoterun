@@ -95,11 +95,15 @@
     <span class="is-italic"><small>[{{moFormat createdAt 'HH:mm:ss'}}] </small> </span> <span class="has-text-weight-bold">{{name}} $ </span>  
       <!-- <span class="content is-small">{{getLog log}}</span> -->
 
+
+      <!-- {{toString log}} -->
    
     {{#each lineSplit log}}
-      <p>{{this}} <br/></p>
+      <p>{{getLog this}} <br/></p>
     {{/each}}
-  </div>
+  </div> 
+
+
   {{/unless}}
 
 
