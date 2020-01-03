@@ -4,6 +4,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js"></script>
 </head>
 <!--  -->
+
 <body>
   <!-- <div class="section"> -->
   <div class="columns is-marginless is-paddingless is-centered">
@@ -17,12 +18,12 @@
       <aside class="menu">
         <p class="menu-label has-text-centered">
           <!-- {{isLoggedSession}} -->
-         Jobs
+          Jobs
         </p>
-        <hr/>
+        <hr />
         {{> remoteFiles}}
-        <hr/>
-       
+        <hr />
+
       </aside>
     </div>
     <!--  -->
@@ -65,13 +66,14 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Job</p>
-            <p class="title is-3 is-capitalized">{{name}}</p>
+            <p class="title is-5 is-capitalized">{{name}}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Started at</p>
-            <p class="title">{{moFormat createdAt 'HH:mm:ss'}}</p>
+            <p class="titlex">{{moFormat createdAt 'MM-DD-YYYY ' }}</p>
+            <p class="titlex">{{moFormat createdAt 'HH:mm:ss' }}</p>
           </div>
         </div>
 
@@ -80,13 +82,14 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Finished at</p>
-            <p class="title">{{moFormat finishedAt 'HH:mm:ss'}}</p>
+            <p class="titlex">{{moFormat finishedAt 'MM-DD-YYYY'}}</p>
+            <p class="titlex">{{moFormat finishedAt 'HH:mm:ss'}}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div class="notification is-primary">
             <p class="heading">Status</p>
-            <p class="title">Success</p>
+            <p class="titlex">Success</p>
           </div>
         </div>
 
@@ -95,7 +98,7 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Command executed</p>
-            <p class="title">Success</p>
+            <p class="titlex">{{command}}</p>
           </div>
         </div>
 
@@ -103,7 +106,7 @@
         <div class="level-item has-text-centered">
           <div class="notificationx is-warningx">
             <p class="heading">Status</p>
-            <p class="title">In progress......</p>
+            <p class="titlex">In progress......</p>
           </div>
         </div>
 
@@ -113,11 +116,14 @@
       </nav>
       <!--  -->
       <hr />
+
+      <p class="titlex content is-small"> Command: <span class="is-italic is-small is-family-monospace">{{command}}</span></p>
+
       <!--  -->
       <!-- Log -->
       {{#unless finishedAt}}
       <progress class="progress is-small is-dark" max="100">15%</progress>
-      
+
       {{/unless}}
 
       <!-- {{#if finishedAt}} -->
