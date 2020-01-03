@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: sans-serif;
   padding: 0px;
@@ -13,28 +17,89 @@ body {
   overflow-y: scroll;
 }
 
-.body::-webkit-scrollbar {
-  display: none;
-}
 
 /* Hide scrollbar for IE and Edge */
 html {
   overflow: scroll;
   overflow-x: hidden;
 }
-::-webkit-scrollbarX {
-  width: 0px;  /* Remove scrollbar space */
-  background: transparent;  /* Optional: just make scrollbar invisible */
-}
-/* Optional: show position indicator in red */
-::-webkit-scrollbar-thumbX {
-  background: #FF0000;
-}
+
 /* log-block */
 
 .log-block{
-  max-height: 240px;
+  height: auto;
+  max-height: 250px;
+  /* min-height: 200px; */
   overflow-y: scroll;
   background: #e4e4e4;
   padding: 10px;
+  font: 0.9rem Inconsolata, monospace;
+  text-shadow: 1px 1px 5px  #fff;
+  color:#444;
+
+}
+
+
+
+
+/* THAT IS FUCKED IMPORTANT TO FIX THE MOBILE LAGGING */
+.is-scroll-fix{
+  will-change: transform;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width:100vw;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+/*  */
+
+::-webkit-scrollbar {
+  width: 0px;  
+  background: transparent;  
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: #FF0000;
+}
+
+.is-scroll {
+  /* overflow: scroll !important; */
+
+  width:100%;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  will-change: transform;
+  height:100%; /*A value other than height:auto needs to be set*/
+  scroll-behavior: smooth;
+}
+
+.is-scroll::-webkit-scrollbar {
+  width: 10px !important;
+  /* remove scrollbar space */
+  background: #d3d3d3;
+  /* optional: just make scrollbar invisible */
+}
+/* optional: show position indicator in red */
+.is-scroll::-webkit-scrollbar-thumb {
+  width: 0px !important;
+  /* background: #FF0000; */
+  background: #777 !important;
+}
+
+.has-scroll{
+  overflow:auto !important;
+  -webkit-overflow-scrolling: touch;
+  will-change: transform;
+}
+
+.is-scroll-hidden{
+  width: 0px !important;
+  /* remove scrollbar space */
+  background: transparent;
+}
+
+.is-scroll-hidden::-webkit-scrollbar-thumb {
+  width: 0px !important;
+  /* background: #FF0000; */
+  background: #777 !important;
 }

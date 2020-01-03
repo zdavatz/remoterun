@@ -1,5 +1,5 @@
 <head>
-  <title>remoterun</title>
+  <title>Remote [RUN]</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js"></script>
 </head>
@@ -8,16 +8,16 @@
   <!-- <div class="section"> -->
   <div class="columns is-marginless is-paddingless is-centered">
     {{#unless isLoggedSession}}
-    {{isLoggedSession}}
+    <!-- {{isLoggedSession}} -->
     {{>login}}
     {{/unless}}
     <!--  -->
     {{#if getSetting 'files'}}
     <div class="column is-2">
       <aside class="menu">
-        <p class="menu-label">
-          {{isLoggedSession}}
-         Remote run
+        <p class="menu-label has-text-centered">
+          <!-- {{isLoggedSession}} -->
+         Jobs
         </p>
         <hr/>
         {{> remoteFiles}}
@@ -74,6 +74,9 @@
             <p class="title">{{moFormat createdAt 'HH:mm:ss'}}</p>
           </div>
         </div>
+
+        {{#if finishedAt}}
+
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Finished at</p>
@@ -81,60 +84,56 @@
           </div>
         </div>
         <div class="level-item has-text-centered">
-          <div>
+          <div class="notification is-primary">
             <p class="heading">Status</p>
             <p class="title">Success</p>
           </div>
         </div>
+
+        {{else}}
+
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Command executed</p>
+            <p class="title">Success</p>
+          </div>
+        </div>
+
+
+        <div class="level-item has-text-centered">
+          <div class="notificationx is-warningx">
+            <p class="heading">Status</p>
+            <p class="title">In progress......</p>
+          </div>
+        </div>
+
+        {{/if}}
+
+
       </nav>
       <!--  -->
       <hr />
       <!--  -->
       <!-- Log -->
-      <div class="log-block">
+      {{#unless finishedAt}}
+      <progress class="progress is-small is-dark" max="100">15%</progress>
+      
+      {{/unless}}
+
+      <!-- {{#if finishedAt}} -->
+      <div class="log-block is-scroll">
         {{#each mkLine log}}
-        {{this}} <br />
+        $ {{this}} <br />
         {{/each}}
       </div>
+      <!-- {{/if}} -->
       <!--  -->
     </div>
-    <!-- id: {{_id}} <br/>
-      startedAt: {{createdAt}} <br/>
-      finishedAt: {{finishedAt}} <br/> -->
   </div>
   {{/each}}
 </template>
-<template name="logsX">
-  <div class="" style='font-family: "Helvetica", "Arial", sans-serif !important;'>
-    {{#each logs}}
-    {{#if isStart}}
-    <div class="has-text-centeredx">
-      <span class="tag is-primary">Starting command: {{name}}</span> <br />
-      <span class="tag is-primary">Started at {{moFormat createdAt 'HH:mm:ss'}}</span><br />
-    </div>
-    <br />
-    <br />
-    {{/if}}
-    {{#unless isBlock}}
-    <div class="" style="line-height: 190%;font-size: 14px;">
-      <span class="is-italic"><small>[{{moFormat createdAt 'HH:mm:ss'}}] </small> </span> <span
-        class="has-text-weight-bold">{{name}} $ </span>
-      <!-- <span class="content is-small">{{getLog log}}</span> -->
-      <!-- {{toString log}} -->
-      {{#each lineSplit log}}
-      <p>{{getLog this}} <br /></p>
-      {{/each}}
-    </div>
-    {{/unless}}
-    {{#if isEnd}}
-    <div class="has-text-centeredx">
-      <span class="tag is-danger">Ended command: {{name}}</span> <br />
-      <span class="tag is-danger">Ended at {{moFormat createdAt 'HH:mm:ss'}}</span><br />
-    </div>
-    {{/if}}
-    {{/each}}
-  </div>
-</template>
+
+<!-- Login -->
 <template name="login">
   <div class="column is-4">
     <br />

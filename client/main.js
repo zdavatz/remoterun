@@ -212,6 +212,7 @@ Template.registerHelper('mkLine', (str) => {
   if (!str) {
     return
   }
+  var str = str.trim()
   var str = str.replace(/otify;/g, "")
   var str = str.replace(/777;preexec/g, "")
   var str = stripAnsi(str)
