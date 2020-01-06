@@ -67,15 +67,15 @@ const term = pty.spawn('bash', [], {
 Meteor.startup(function () {
   if (settings.ssl) {
 
-    SSLProxy({
-      port: 6000, //or 443 (normal port/requires sudo)
-      ssl: {
-        key: Assets.getText("key.pem"),
-        cert: Assets.getText("cert.pem"),
-        //Optional CA
-        //Assets.getText("ca.pem")
-      }
-    });
+    // SSLProxy({
+    //   port: 6000, //or 443 (normal port/requires sudo)
+    //   ssl: {
+    //     key: Assets.getText("key.pem"),
+    //     cert: Assets.getText("cert.pem"),
+    //     //Optional CA
+    //     //Assets.getText("ca.pem")
+    //   }
+    // });
 
     /**
      * nourharidy:ssl 
@@ -91,35 +91,35 @@ Meteor.startup(function () {
      * ...
     */
 
-    // const isProduction = process.env.NODE_ENV !== 'development';
-    // if (!isProduction) {
-    //   const httpProxy = require('http-proxy');
-    //   const SSL = function (key, cert, port) {
-    //     const [, , host, targetPort] = Meteor.absoluteUrl().match(/([a-zA-Z]+):\/\/([\-\w\.]+)(?:\:(\d{0,5}))?/);
-    //     const proxy = httpProxy
-    //       .createServer({
-    //         target: {
-    //           host,
-    //           port: targetPort,
-    //         },
-    //         ssl: {
-    //           key,
-    //           cert,
-    //         },
-    //         ws: true,
-    //         xfwd: true,
-    //       })
-    //       .listen(port);
+    const isProduction = process.env.NODE_ENV !== 'development';
+    if (!isProduction) {
+      const httpProxy = require('http-proxy');
+      const SSL = function (key, cert, port) {
+        const [, , host, targetPort] = Meteor.absoluteUrl().match(/([a-zA-Z]+):\/\/([\-\w\.]+)(?:\:(\d{0,5}))?/);
+        const proxy = httpProxy
+          .createServer({
+            target: {
+              host,
+              port: targetPort,
+            },
+            ssl: {
+              key,
+              cert,
+            },
+            ws: true,
+            xfwd: true,
+          })
+          .listen(port);
 
-    //     proxy.on('error', err => {
-    //       console.log(`HTTP-PROXY NPM MODULE ERROR: ${err}`);
-    //     });
+        proxy.on('error', err => {
+          console.log(`HTTP-PROXY NPM MODULE ERROR: ${err}`);
+        });
 
-    //     console.log('PROXY RUNNING ON', port, proxy);
-    //   };
-    //   //
-    //   SSL(Assets.getText('localhost.key'), Assets.getText('localhost.cert'), 9000);
-    // }
+        console.log('PROXY RUNNING ON', port, proxy);
+      };
+      //
+      SSL(Assets.getText('localhost.key'), Assets.getText('localhost.cert'), 9000);
+    }
 
 
 
