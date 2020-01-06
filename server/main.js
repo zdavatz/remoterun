@@ -80,8 +80,8 @@ Meteor.startup(function () {
      */
 
     SSL(
-      Assets.getText("localhost.key"),
-      Assets.getText("localhost.cert"),
+      Assets.getText("key.pem"),
+      Assets.getText("cert.pem"),
     443);
   }
 });
