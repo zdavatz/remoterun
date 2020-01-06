@@ -64,15 +64,25 @@ const term = pty.spawn('bash', [], {
  */
 Meteor.startup(function () {
   if (settings.ssl) {
-    SSLProxy({
-      port: 3100, //or 443 (normal port/requires sudo)
-      ssl: {
-        key: Assets.getText("key.pem"),
-        cert: Assets.getText("cert.pem"),
-        //Optional CA
-        //Assets.getText("ca.pem")
-      }
-    });
+    
+    // SSLProxy({
+    //   port: 6000, //or 443 (normal port/requires sudo)
+    //   ssl: {
+    //     key: Assets.getText("key.pem"),
+    //     cert: Assets.getText("cert.pem"),
+    //     //Optional CA
+    //     //Assets.getText("ca.pem")
+    //   }
+    // });
+
+    /**
+     * nourharidy:ssl 
+     */
+
+    SSL(
+      Assets.getText("localhost.key"),
+      Assets.getText("localhost.cert"),
+    443);
   }
 });
 /**
