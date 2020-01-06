@@ -98,7 +98,8 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Command executed</p>
-            <p class="titlex">at {{moFormat createdAt 'HH:mm:ss' }}</p>
+            <!-- <p class="titlex">at {{moFormat createdAt 'HH:mm:ss' }}</p> -->
+            <p>{{timer createdAt}}</p>
           </div>
         </div>
 
@@ -116,6 +117,8 @@
       </nav>
       <!--  -->
       <hr />
+
+      
 
       <p class="titlex content is-small"> Command: <span class="is-italic is-small is-family-monospace">{{command}}</span></p>
 

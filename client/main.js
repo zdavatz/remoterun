@@ -243,3 +243,12 @@ Template.registerHelper("isLoggedSession", function () {
     return true
   }
 });
+
+/**
+ * Timer
+ */
+
+ Template.registerHelper('timer',function(time){
+  var dur = time ? Chronos.currentTime(100) - time : null;
+  return dur / 100;
+ })

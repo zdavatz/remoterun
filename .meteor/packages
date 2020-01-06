@@ -27,3 +27,5 @@ session
 frozeman:storage
 jeffm:local-persist
 nourharidy:ssl
+remcoder:chronos
+momentjs:moment
