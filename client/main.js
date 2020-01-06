@@ -208,7 +208,7 @@ Template.registerHelper('timer', function (time) {
   var countDown = moment.utc(durtion.asMilliseconds()).format('mm:ss')
   var durationAsMs = durtion.asMilliseconds()
   if (durationAsMs == 0 || durationAsMs < 600) {
-    var countDown = '00:00'
+    var countDown = '00:01'
   }
   return countDown
 })
