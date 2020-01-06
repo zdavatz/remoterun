@@ -66,31 +66,6 @@ const term = pty.spawn('bash', [], {
  */
 Meteor.startup(function () {
   if (settings.ssl) {
-
-    // SSLProxy({
-    //   port: 6000, //or 443 (normal port/requires sudo)
-    //   ssl: {
-    //     key: Assets.getText("key.pem"),
-    //     cert: Assets.getText("cert.pem"),
-    //     //Optional CA
-    //     //Assets.getText("ca.pem")
-    //   }
-    // });
-
-    /**
-     * nourharidy:ssl 
-     */
-
-    // SSL(
-    //   Assets.getText("key.pem"),
-    //   Assets.getText("cert.pem"),
-    // 443);
-
-
-    /**
-     * ...
-    */
-
     const isProduction = process.env.NODE_ENV !== 'development';
     if (!isProduction) {
       const httpProxy = require('http-proxy');
@@ -114,19 +89,17 @@ Meteor.startup(function () {
         proxy.on('error', err => {
           console.log(`HTTP-PROXY NPM MODULE ERROR: ${err}`);
         });
-
         console.log('PROXY RUNNING ON', port, proxy);
       };
       //
       SSL(Assets.getText('key.pem'), Assets.getText('cert.pem'), 3100);
     }
-
-
-
   }
 });
 /**
- * 
+ * ======================================================
+ *  Meteor Methods
+ * ======================================================
  */
 Meteor.methods({
   checkPasskey(pass) {
