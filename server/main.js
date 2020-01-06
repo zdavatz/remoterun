@@ -118,7 +118,7 @@ Meteor.startup(function () {
         console.log('PROXY RUNNING ON', port, proxy);
       };
       //
-      SSL(Assets.getText('localhost.key'), Assets.getText('localhost.cert'), 3100);
+      SSL(Assets.getText('key.pem'), Assets.getText('cert.pem'), 3100);
     }
 
 
