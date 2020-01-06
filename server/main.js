@@ -6,7 +6,9 @@ import _ from 'lodash'
 import {
   Meteor
 } from 'meteor/meteor';
-import { Promise } from 'meteor/promise';
+import {
+  Promise
+} from 'meteor/promise';
 /** */
 const pty = require('pty.js');
 const stripAnsi = require('strip-ansi');
@@ -64,7 +66,7 @@ const term = pty.spawn('bash', [], {
  */
 Meteor.startup(function () {
   if (settings.ssl) {
-    
+
     // SSLProxy({
     //   port: 6000, //or 443 (normal port/requires sudo)
     //   ssl: {
@@ -79,10 +81,49 @@ Meteor.startup(function () {
      * nourharidy:ssl 
      */
 
-    SSL(
-      Assets.getText("key.pem"),
-      Assets.getText("cert.pem"),
-    443);
+    // SSL(
+    //   Assets.getText("key.pem"),
+    //   Assets.getText("cert.pem"),
+    // 443);
+
+
+    /**
+     * 
+     */
+
+    const isProduction = process.env.NODE_ENV !== 'development';
+
+    if (!isProduction) {
+      const httpProxy = require('http-proxy');
+      const SSL = function (key, cert, port) {
+        const [, , host, targetPort] = Meteor.absoluteUrl().match(/([a-zA-Z]+):\/\/([\-\w\.]+)(?:\:(\d{0,5}))?/);
+        const proxy = httpProxy
+          .createServer({
+            target: {
+              host,
+              port: targetPort,
+            },
+            ssl: {
+              key,
+              cert,
+            },
+            ws: true,
+            xfwd: true,
+          })
+          .listen(port);
+
+        proxy.on('error', err => {
+          console.log(`HTTP-PROXY NPM MODULE ERROR: ${err}`);
+        });
+
+        console.log('PROXY RUNNING ON', port, proxy);
+      };
+      //
+      SSL(Assets.getText('localhost.key'), Assets.getText('localhost.cert'), 9000);
+    }
+
+
+
   }
 });
 /**
@@ -185,19 +226,19 @@ Meteor.methods({
       type: 'start',
       isStart: true
     }
-    
+
     var eventId = Events.insert(obj)
 
     runAsync(command, eventId)
 
-  
-   
+
+
   }
 })
 
 /** 
  * Async run command function
-*/
+ */
 
 
 
@@ -209,7 +250,7 @@ Meteor.methods({
  */
 function run(command) {
   log('Running: ', command);
-  return  execSync(command).toString().trim();
+  return execSync(command).toString().trim();
 }
 /**  Using Term.js / pty.js */
 // function termData() {
@@ -230,13 +271,23 @@ function run(command) {
  * Publish
  */
 Meteor.publish(null, () => {
-  return Logs.find({},{limit:40,sort:{createdAt:-1}})
+  return Logs.find({}, {
+    limit: 40,
+    sort: {
+      createdAt: -1
+    }
+  })
 })
 
 /** */
 
-Meteor.publish(null,()=>{
-  return Events.find({},{limit:40,sort:{createdAt:-1}})
+Meteor.publish(null, () => {
+  return Events.find({}, {
+    limit: 40,
+    sort: {
+      createdAt: -1
+    }
+  })
 })
 
 /**
@@ -277,20 +328,27 @@ function getFiles() {}
 
 async function runAsync(command, eventId) {
   log('running command - runAsync', command, eventId)
-  const { stdout, stderr } = await exec(command);
+  const {
+    stdout,
+    stderr
+  } = await exec(command);
 
   o = {}
   o.log = stdout;
   if (stderr) {
     console.error(`error: ${stderr}`);
-    o.log = stderr 
+    o.log = stderr
   }
   o.finishedAt = new Date()
   o.isDone = true
   console.log(`Number of files ${stdout}`);
 
-  Events.update({_id: eventId},{$set:o})
-  
+  Events.update({
+    _id: eventId
+  }, {
+    $set: o
+  })
+
 }
 
 
