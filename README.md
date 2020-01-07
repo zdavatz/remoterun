@@ -1,7 +1,7 @@
 # RemoteRun
 
 
-RemoteRun is a simple useful tool to run commands/ files remotely thru a web interface. It requires minimal setup and configuration. 
+RemoteRun is a simple useful tool to run commands and files remotely through a web interface. It requires minimal setup and configuration. 
 
 
 ![Screenshot](screenshot.png)
