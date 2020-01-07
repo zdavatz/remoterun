@@ -30,3 +30,4 @@ ___
 2. Add the files at settings.yaml
 3. Run $ meteor
 4. Examine the app at http://localhost:3000 
+5. Enable SSL for local testing, see: https://github.com/zdavatz/remoterun/issues/3
