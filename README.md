@@ -1,5 +1,22 @@
-# remoterun
-1. Login with Password via Browser. The Passwort should be saved in a separate file.
+# RemoteRun
+
+
+RemoteRun is a simple useful tool to run commands/ files remotely thru a web interface. It requires minimal setup and configuration. 
+
+
+![Screenshot](screenshot.png)
+
+
+## Features
+
+    - Run multiple jobs
+    - log the job stdout
+    - simple setting and configuration file
+   
+
+## Manual
+
+1. Login with Password via Browser. The Password should be saved in a separate file.
 
 2. Start a program located in /usr/local/bin using a browser, remotely, via the click of one button. One button per file. Manage them via an yaml file.
 
@@ -8,6 +25,7 @@
 
 ___
 
+### How to use!
 1. Get settings file ready: $ mv setting.example.yaml private/settings.yaml
 2. Add the files at settings.yaml
 3. Run $ meteor
