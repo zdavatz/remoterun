@@ -133,8 +133,9 @@
 
 
         <div class="level-item has-text-centered">
-          <div class="notification is-danger">
-            <p class="heading">Running...</p>
+          <div class="{{#if isDesktop}}notification is-danger{{/if}}">
+            <p class="heading is-hidden-mobile">Running...</p>
+            <p class="heading is-hidden-desktop">Command executed</p>
             <p>{{timer createdAt}}</p>
           </div>
         </div>
