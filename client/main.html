@@ -80,39 +80,24 @@
   {{#if eventsList}}
   {{#each eventsList}}
     <div class="notification is-paddingless is-white" style="padding:10px !important;">
-
-
-
       <!-- Mobile -->
       <div class="column is-12 has-text-centeredx is-hidden-desktop">
         <div>
-
           <span class="is-pulled-right">
             {{#if finishedAt}}
             <span class="heading">Status</span>
             <span class="tag is-primary">Success</span>
-
             {{else}}
             <span class="heading">Status</span>
             <span class="tag is-danger">Running....</span>
-            
             {{/if}}
-       
           </span>
-          
           <p class="heading">Job
           </p>
           <p class="has-text-weight-bold">{{name}}</p>
-        
-
-
-
         </div>
         <hr/>
       </div>
-
-
-
       <!-- Desktop -->
       <nav class="level is-mobile">
         <div class="level-item has-text-centered is-hidden-mobile">
@@ -147,18 +132,16 @@
         {{else}}
         <div class="level-item has-text-centered">
           <div>
-            <p class="tag is-danger is-hidden-mobile">Running...</p>
-            <p class="tag is-danger is-hidden-desktop">Command executed</p>
+            <span class="tag is-danger is-hidden-mobile">Running...</span>
+            <span class="tag is-danger is-hidden-desktop">Command executed</span>
             <p>{{timer createdAt}}</p>
           </div>
         </div>
-      
         {{/if}}
       </nav>
       <!--  -->
       <hr />
       <p class="content is-small"> Command: <span class="is-italic is-small is-family-monospace">{{command}}</span></p>
-      
       <!--  -->
       <!-- Log -->
       {{#unless finishedAt}}
