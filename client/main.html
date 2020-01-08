@@ -130,13 +130,16 @@
           </div>
         </div>
         {{else}}
+
+
         <div class="level-item has-text-centered">
-          <div>
-            <span class="tag is-danger is-hidden-mobile">Running...</span>
-            <span class="tag is-danger is-hidden-desktop">Command executed</span>
+          <div class="notification is-danger">
+            <p class="heading">Running...</p>
             <p>{{timer createdAt}}</p>
           </div>
         </div>
+
+
         {{/if}}
       </nav>
       <!--  -->
