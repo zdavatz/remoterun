@@ -82,12 +82,21 @@
     <div class="notification is-paddingless is-white" style="padding:10px !important;">
 
 
+
+      <!-- Mobile -->
       <div class="column is-12 has-text-centeredx is-hidden-desktop">
         <div>
 
           <span class="is-pulled-right">
+            {{#if finishedAt}}
             <span class="heading">Status</span>
             <span class="tag is-primary">Success</span>
+
+            {{else}}
+
+            <span class="heading">In-progress</span>
+            
+            {{/if}}
        
           </span>
           
@@ -103,6 +112,8 @@
       </div>
 
 
+
+      <!-- Desktop -->
       <nav class="level is-mobile">
         <div class="level-item has-text-centered is-hidden-mobile">
           <div>
@@ -153,14 +164,6 @@
       <!--  -->
       <!-- Log -->
       {{#unless finishedAt}}
-
-      <div class="level-itemx has-text-centeredx">
-        <div class="notificationx is-warningx">
-          <p class="heading">Status</p>
-          <p class="titlex">In progress......</p>
-        </div>
-      </div>
-
       <progress class="progress is-small is-dark" max="100">15%</progress>
       {{/unless}}
       <!-- {{#if finishedAt}} -->
