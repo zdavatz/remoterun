@@ -15,7 +15,6 @@
     {{/unless}}
     <!--  -->
     <!-- {{>navbar}} -->
-
     <!--  -->
     {{#if getSetting 'files'}}
     <!-- {{#if getSetting 'mobMenu'}} -->
@@ -33,22 +32,15 @@
           </span></a>
         </div>
         <br/>
-
-
-
         {{#if isPhone}}
         {{#if getSetting 'mobMenu'}}
         {{> remoteFiles}}
         {{/if}}
         {{/if}}
-
         <!--  -->
         <div class="is-hidden-mobile">
           {{> remoteFiles}}
         </div>
-
-
-        
         <hr />
       </aside>
     </div>
@@ -88,21 +80,39 @@
   {{#if eventsList}}
   {{#each eventsList}}
     <div class="notification is-paddingless is-white" style="padding:10px !important;">
+
+
+      <div class="column is-12 has-text-centeredx is-hidden-desktop">
+        <div>
+
+          <span class="is-pulled-right">
+            <span class="heading">Status</span>
+            <span class="tag is-primary">Success</span>
+       
+          </span>
+          
+          <p class="heading">Job
+          </p>
+          <p class="has-text-weight-bold">{{name}}</p>
+        
+
+
+
+        </div>
+        <hr/>
+      </div>
+
+
       <nav class="level is-mobile">
-        <div class="level-item has-text-centered">
+        <div class="level-item has-text-centered is-hidden-mobile">
           <div>
             <p class="heading">Job
             </p>
-            <p class="title is-5 is-capitalized">{{name}}</p>
-
-            <div class="level-itemx has-text-centered is-hidden-desktop">
-              <div class="">
+            <p class="has-text-weight-bold">{{name}}</p>
+            <div class="has-text-centered is-hidden-desktop">
                 <p class="heading">Status</p>
                 <p class="tag is-primary">Success</p>
-              </div>
             </div>
-
-
           </div>
         </div>
         <div class="level-item has-text-centered">
@@ -141,7 +151,6 @@
         </div>
         {{/if}}
       </nav>
-   
       <!--  -->
       <hr />
       <p class="content is-small"> Command: <span class="is-italic is-small is-family-monospace">{{command}}</span></p>
@@ -175,6 +184,7 @@
 </template>
 <!-- Login -->
 <template name="login">
+  <br/>
   <div class="column is-3">
     <br />
     <br />
