@@ -2,30 +2,57 @@
   <title>Remote [RUN]</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js"></script>
+  <!--  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <!--  -->
-
 <body>
   <!-- <div class="section"> -->
-  <div class="columns is-marginless is-paddingless is-centered">
+  <div class="columns is-marginless is-paddingless is-centered is-multiline">
     {{#unless isLoggedSession}}
     <!-- {{isLoggedSession}} -->
     {{>login}}
     {{/unless}}
     <!--  -->
-    {{#if getSetting 'files'}}
-    <div class="column is-2">
-      <aside class="menu">
-        <p class="menu-label has-text-centered">
-          <!-- {{isLoggedSession}} -->
-          Jobs
-        </p>
-        <hr />
-        {{> remoteFiles}}
-        <hr />
+    <!-- {{>navbar}} -->
 
+    <!--  -->
+    {{#if getSetting 'files'}}
+    <!-- {{#if getSetting 'mobMenu'}} -->
+    <div class="column is-2 is-hidden-mobilex" id="files">
+      <aside class="menu">
+        <div class="menu-label has-text-centered">
+          <!-- {{isLoggedSession}} -->
+          <span class="is-hidden-mobile">Jobs</span>
+          <a   class="button toggleSetting is-hidden-desktop is-pulled-right is-hidden-desktop" data-setting="mobMenu"><span class="">
+            {{#if getSetting 'mobMenu'}}
+              X
+            {{else}}
+              Jobs
+            {{/if}}
+          </span></a>
+        </div>
+        <br/>
+
+
+
+        {{#if isPhone}}
+        {{#if getSetting 'mobMenu'}}
+        {{> remoteFiles}}
+        {{/if}}
+        {{/if}}
+
+        <!--  -->
+        <div class="is-hidden-mobile">
+          {{> remoteFiles}}
+        </div>
+
+
+        
+        <hr />
       </aside>
     </div>
+    <!-- {{/if}} -->
     <!--  -->
     <div class="column is-10 is-paddingless is-marginless is-fh notification">
       <div class="">
@@ -39,6 +66,7 @@
 </body>
 <!--  -->
 <template name="remoteFiles">
+  <hr/>
   <ul class="menu-list notification is-white">
     {{#each files}}
     <li><a href="#" class="is-capitalized runCommand" data-val="{{id}}">{{name}}</a> </li>
@@ -49,24 +77,32 @@
 </template>
 <!-- console -->
 <template name="console">
-  <article class="notification is-light is-radiusless" style="min-height:600px;">
+  <article class="notification is-light is-radiusless">
     <!--  -->
-    <div class="">
       {{> logs}}
-    </div>
   </article>
 </template>
 <!--  -->
 <!-- logs -->
 <template name="logs">
+  {{#if eventsList}}
   {{#each eventsList}}
-  <div class="notification is-white">
-    <div class="notification is-white">
-      <nav class="level">
+    <div class="notification is-paddingless is-white" style="padding:10px !important;">
+      <nav class="level is-mobile">
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Job</p>
+            <p class="heading">Job
+            </p>
             <p class="title is-5 is-capitalized">{{name}}</p>
+
+            <div class="level-itemx has-text-centered is-hidden-desktop">
+              <div class="">
+                <p class="heading">Status</p>
+                <p class="tag is-primary">Success</p>
+              </div>
+            </div>
+
+
           </div>
         </div>
         <div class="level-item has-text-centered">
@@ -76,9 +112,7 @@
             <p class="titlex">{{moFormat createdAt 'HH:mm:ss' }}</p>
           </div>
         </div>
-
         {{#if finishedAt}}
-
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Finished at</p>
@@ -86,49 +120,36 @@
             <p class="titlex">{{moFormat finishedAt 'HH:mm:ss'}}</p>
           </div>
         </div>
-        <div class="level-item has-text-centered">
+        <div class="level-item has-text-centered is-hidden-mobile">
           <div class="notification is-primary">
             <p class="heading">Status</p>
             <p class="titlex">Success</p>
           </div>
         </div>
-
         {{else}}
-
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Command executed</p>
-            <!-- <p class="titlex">at {{moFormat createdAt 'HH:mm:ss' }}</p> -->
             <p>{{timer createdAt}}</p>
           </div>
         </div>
-
-
         <div class="level-item has-text-centered">
           <div class="notificationx is-warningx">
             <p class="heading">Status</p>
             <p class="titlex">In progress......</p>
           </div>
         </div>
-
         {{/if}}
-
-
       </nav>
+   
       <!--  -->
       <hr />
-
-      
-
-      <p class="titlex content is-small"> Command: <span class="is-italic is-small is-family-monospace">{{command}}</span></p>
-
+      <p class="content is-small"> Command: <span class="is-italic is-small is-family-monospace">{{command}}</span></p>
       <!--  -->
       <!-- Log -->
       {{#unless finishedAt}}
       <progress class="progress is-small is-dark" max="100">15%</progress>
-
       {{/unless}}
-
       <!-- {{#if finishedAt}} -->
       <div class="log-block is-scroll">
         {{#each mkLine log}}
@@ -138,10 +159,20 @@
       <!-- {{/if}} -->
       <!--  -->
     </div>
-  </div>
   {{/each}}
+  <!--  -->
+  {{else}}
+  <p class="notificationx is-white">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+  </p>
+  {{/if}}
 </template>
-
 <!-- Login -->
 <template name="login">
   <div class="column is-3">
@@ -161,4 +192,61 @@
     <div>
     </div>
   </div>
+</template>
+<!-- navbar -->
+<template name="navbar">
+  <nav class="navbar is-hidden-desktop" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="#">
+        Remote [RUN]
+      </a>
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item">
+          Home
+        </a>
+        <a class="navbar-item">
+          Documentation
+        </a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            More
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item">
+              About
+            </a>
+            <a class="navbar-item">
+              Jobs
+            </a>
+            <a class="navbar-item">
+              Contact
+            </a>
+            <hr class="navbar-divider">
+            <a class="navbar-item">
+              Report an issue
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-primary">
+              <strong>Sign up</strong>
+            </a>
+            <a class="button is-light">
+              Log in
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
 </template>

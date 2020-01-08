@@ -29,10 +29,11 @@ html {
 .log-block{
   height: auto;
   max-height: 250px;
+  width: 100%;
   /* min-height: 200px; */
   overflow-y: scroll;
   background: #e4e4e4;
-  padding: 10px;
+  padding: 5px;
   font: 0.9rem Inconsolata, monospace;
   text-shadow: 1px 1px 5px  #fff;
   color:#444;

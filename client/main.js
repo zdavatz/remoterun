@@ -170,7 +170,7 @@ Template.logs.helpers({
       sort: {
         createdAt: -1
       }
-    })
+    }).fetch()
   },
   logs() {
     var logs = Logs.find({}, {
@@ -257,3 +257,8 @@ Template.registerHelper('timer', function (time) {
   var durationSecs = moment.duration(now.diff(end)).seconds()
   return durtionMins + " : " + durationSecs;
 })
+
+/**
+ * Navbar for mobile
+*/
+
