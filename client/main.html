@@ -120,10 +120,6 @@
             <p class="heading">Job
             </p>
             <p class="has-text-weight-bold">{{name}}</p>
-            <div class="has-text-centered is-hidden-desktop">
-                <p class="heading">Status</p>
-                <p class="tag is-primary">Success</p>
-            </div>
           </div>
         </div>
         <div class="level-item has-text-centered">
@@ -150,7 +146,7 @@
         {{else}}
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Command executed</p>
+            <p class="tag is-danger">Running...</p>
             <p>{{timer createdAt}}</p>
           </div>
         </div>
