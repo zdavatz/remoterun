@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <!--  -->
+
 <body>
   <!-- <div class="section"> -->
   <div class="columns is-marginless is-paddingless is-centered is-multiline">
@@ -20,18 +21,23 @@
     <!-- {{#if getSetting 'mobMenu'}} -->
     <div class="column is-2 is-hidden-mobilex" id="files">
       <aside class="menu">
-        <div class="menu-label has-text-centered">
+        <div class="column">
           <!-- {{isLoggedSession}} -->
           <span class="is-hidden-mobile">Jobs</span>
-          <a   class="button toggleSetting is-hidden-desktop is-pulled-right is-hidden-desktop" data-setting="mobMenu"><span class="">
-            {{#if getSetting 'mobMenu'}}
+
+          <!--  -->
+          <a class="button toggleSetting is-hidden-desktop is-pulled-right is-hidden-desktop"
+            data-setting="mobMenu"><span class="">
+              {{#if getSetting 'mobMenu'}}
               X
-            {{else}}
+              {{else}}
               Jobs
-            {{/if}}
-          </span></a>
+              {{/if}}
+            </span></a>
         </div>
-        <br/>
+        <br />
+
+
         {{#if isPhone}}
         {{#if getSetting 'mobMenu'}}
         {{> remoteFiles}}
@@ -41,7 +47,7 @@
         <div class="is-hidden-mobile">
           {{> remoteFiles}}
         </div>
-        <hr />
+        <!-- <hr /> -->
       </aside>
     </div>
     <!-- {{/if}} -->
@@ -58,7 +64,7 @@
 </body>
 <!--  -->
 <template name="remoteFiles">
-  <hr/>
+  <hr />
   <ul class="menu-list notification is-white">
     {{#each files}}
     <li><a href="#" class="is-capitalized runCommand" data-val="{{id}}">{{name}}</a> </li>
@@ -71,7 +77,7 @@
 <template name="console">
   <article class="notification is-light is-radiusless">
     <!--  -->
-      {{> logs}}
+    {{> logs}}
   </article>
 </template>
 <!--  -->
@@ -79,87 +85,86 @@
 <template name="logs">
   {{#if eventsList}}
   {{#each eventsList}}
-    <div class="notification is-paddingless is-white" style="padding:10px !important;">
-      <!-- Mobile -->
-      <div class="column is-12 has-text-centeredx is-hidden-desktop">
+  <div class="notification is-paddingless is-white" style="padding:10px !important;">
+    <!-- Mobile -->
+    <div class="column is-12 has-text-centeredx is-hidden-desktop">
+      <div>
+        <span class="is-pulled-right">
+          {{#if finishedAt}}
+          <span class="heading">Status</span>
+          <span class="tag is-primary">Success</span>
+          {{else}}
+          <span class="heading">Status</span>
+          <span class="tag is-danger">Running....</span>
+          {{/if}}
+        </span>
+        <p class="heading">Job
+        </p>
+        <p class="has-text-weight-bold">{{name}}</p>
+      </div>
+      <hr />
+    </div>
+    <!-- Desktop -->
+    <nav class="level is-mobile">
+      <div class="level-item has-text-centered is-hidden-mobile">
         <div>
-          <span class="is-pulled-right">
-            {{#if finishedAt}}
-            <span class="heading">Status</span>
-            <span class="tag is-primary">Success</span>
-            {{else}}
-            <span class="heading">Status</span>
-            <span class="tag is-danger">Running....</span>
-            {{/if}}
-          </span>
           <p class="heading">Job
           </p>
           <p class="has-text-weight-bold">{{name}}</p>
         </div>
-        <hr/>
       </div>
-      <!-- Desktop -->
-      <nav class="level is-mobile">
-        <div class="level-item has-text-centered is-hidden-mobile">
-          <div>
-            <p class="heading">Job
-            </p>
-            <p class="has-text-weight-bold">{{name}}</p>
-          </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Started at</p>
+          <p class="titlex">{{moFormat createdAt 'DD.MM.YYYY ' }}</p>
+          <p class="titlex">{{moFormat createdAt 'HH:mm:ss' }}</p>
         </div>
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Started at</p>
-            <p class="titlex">{{moFormat createdAt 'DD.MM.YYYY ' }}</p>
-            <p class="titlex">{{moFormat createdAt 'HH:mm:ss' }}</p>
-          </div>
-        </div>
-        {{#if finishedAt}}
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Finished at</p>
-            <p class="titlex">{{moFormat finishedAt 'DD.MM.YYYY'}}</p>
-            <p class="titlex">{{moFormat finishedAt 'HH:mm:ss'}}</p>
-          </div>
-        </div>
-        <!-- Hidden Mobile -->
-        <div class="level-item has-text-centered is-hidden-mobile">
-          <div class="notification is-primary">
-            <p class="heading">Status</p>
-            <p class="titlex">Success</p>
-          </div>
-        </div>
-        {{else}}
-
-
-        <div class="level-item has-text-centered">
-          <div class="{{#if isDesktop}}notification is-danger{{/if}}">
-            <p class="heading is-hidden-mobile">Running...</p>
-            <p class="heading is-hidden-desktop">Command executed</p>
-            <p>{{timer createdAt}}</p>
-          </div>
-        </div>
-
-
-        {{/if}}
-      </nav>
-      <!--  -->
-      <hr />
-      <p class="content is-small"> Command: <span class="is-italic is-small is-family-monospace">{{command}}</span></p>
-      <!--  -->
-      <!-- Log -->
-      {{#unless finishedAt}}
-      <progress class="progress is-small is-dark" max="100">15%</progress>
-      {{/unless}}
-      <!-- {{#if finishedAt}} -->
-      <div class="log-block is-scroll">
-        {{#each mkLine log}}
-        $ {{this}} <br />
-        {{/each}}
       </div>
-      <!-- {{/if}} -->
-      <!--  -->
+      {{#if finishedAt}}
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Finished at</p>
+          <p class="titlex">{{moFormat finishedAt 'DD.MM.YYYY'}}</p>
+          <p class="titlex">{{moFormat finishedAt 'HH:mm:ss'}}</p>
+        </div>
+      </div>
+      <!-- Hidden Mobile -->
+      <div class="level-item has-text-centered is-hidden-mobile">
+        <div class="notification is-primary">
+          <p class="heading">Status</p>
+          <p class="titlex">Success</p>
+        </div>
+      </div>
+      {{else}}
+
+
+      <div class="level-item has-text-centered">
+        <div class="{{#if isDesktop}}notification is-danger{{/if}}">
+          <p class="heading is-hidden-mobile">Running...</p>
+          <p class="">{{timer createdAt}}</p>
+        </div>
+      </div>
+
+
+      {{/if}}
+    </nav>
+    <!--  -->
+    <hr />
+    <p class="content is-small"> Command: <span class="is-italic is-small is-family-monospace">{{command}}</span></p>
+    <!--  -->
+    <!-- Log -->
+    {{#unless finishedAt}}
+    <progress class="progress is-small is-dark" max="100">15%</progress>
+    {{/unless}}
+    <!-- {{#if finishedAt}} -->
+    <div class="log-block is-scroll">
+      {{#each mkLine log}}
+      $ {{this}} <br />
+      {{/each}}
     </div>
+    <!-- {{/if}} -->
+    <!--  -->
+  </div>
   {{/each}}
   <!--  -->
   {{else}}
@@ -176,7 +181,7 @@
 </template>
 <!-- Login -->
 <template name="login">
-  <br/>
+  <br />
   <div class="column is-3">
     <br />
     <br />
@@ -202,7 +207,8 @@
       <a class="navbar-item" href="#">
         Remote [RUN]
       </a>
-      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+        data-target="navbarBasicExample">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
