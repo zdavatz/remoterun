@@ -13,7 +13,7 @@
     "jquery": "^3.5.0",
     "lodash": "^4.17.21",
     "meteor-node-stubs": "^1.0.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "pty.js": "^0.3.1",
     "shelljs": "^0.8.5",
     "strip-ansi": "^6.0.0",
