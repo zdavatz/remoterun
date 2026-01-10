@@ -12,7 +12,7 @@
     "http-proxy": "^1.18.1",
     "jquery": "^3.5.0",
     "lodash": "^4.17.21",
-    "meteor-node-stubs": "^1.0.0",
+    "meteor-node-stubs": "^1.2.24",
     "moment": "^2.29.4",
     "pty.js": "^0.3.1",
     "shelljs": "^0.8.5",
